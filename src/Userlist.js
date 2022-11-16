@@ -80,6 +80,7 @@ class Userlist extends React.Component {
             return (
                 <Fragment>
                     <Menu />
+                    {/* </Fragment> //Link to={"/user/create"}>Create New</Link> */}
                     <table className="table table-sm">
                         <thead>
                             <tr>
