@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+}
+nav {
+    background-color: #454545;
+}
+ul {
+    margin: 0;
+    padding: 0 0 0 5px;
+
+}
+li {
+    display: inline-block;
+}
+a {
+    padding: 0 10px;
+    color: silver;
+    text-decoration: none;
+}
+a:hover {
+    color: white;
+    background-color: black;
+}
