@@ -15,8 +15,8 @@ class Userdetail extends React.Component {
     }
     
     init() {
-        const [queryParameters] = useSearchParams();
-        let id = queryParameters.get("id");
+        // const [queryParameters] = useSearchParams();
+        // let id = queryParameters.get("id");
         fetch(`http://localhost:5000/api/users/${this.id}`)
         .then(res => res.json())
         .then(
@@ -41,6 +41,8 @@ class Userdetail extends React.Component {
     }
 
     render() {
+        // const [queryParameters] = useSearchParams();
+        // const id = queryParameters.get("id");
         const isLoaded = this.state.isLoaded;
         const error = this.state.error;
         const user = this.state.user;
