@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import Menu from './Menu';
+import { Link } from 'react-router-dom';
+import Menu from '../../Menu';
 import './Userlist.css';
 class Userlist extends React.Component {
 
@@ -14,7 +15,6 @@ class Userlist extends React.Component {
     }
 
     componentDidMount() {
-        console.debug("componentDidMount()");
         fetch("http://localhost:5000/api/users")
             .then(res => res.json())
             .then(
@@ -24,10 +24,8 @@ class Userlist extends React.Component {
                         isLoaded: true,
                         users: result
                     });
-                    console.debug(this.state);
                 },
                 (error) => {
-                    console.error(error);
                     this.setState({
                         error,
                         isLoaded: false
@@ -38,7 +36,6 @@ class Userlist extends React.Component {
     }
 
     generateRows() {
-        console.debug("generateRows()");
         const users = this.state.users;
         let trs = [];
         users.forEach((u,i) => {
@@ -51,7 +48,7 @@ class Userlist extends React.Component {
                     <td>{u.isReviewer ? "Yes" : "No"}</td>
                     <td>{u.isAdmin ? "Yes" : "No"}</td>
                     <td className="blue">
-                        <span>Detail</span>
+                        <Link to={`/user/detail/${u.id}`}>Detail</Link>
                         <span> | </span>
                         <span>Edit</span>
                     </td>
@@ -63,19 +60,14 @@ class Userlist extends React.Component {
     }
 
     render() {
-        console.debug("render()");
-        const users = this.state.users;
         const isLoaded = this.state.isLoaded;
         const error = this.state.error;
-        console.debug("State:", isLoaded, users, error);
         if(error) { 
             console.error(error);
             return <p>Error</p>
         } else if(!isLoaded) {
-            console.debug("Loading ...");
             return <p>Loading ...</p>
         } else {
-            console.debug("Users:", users);
             const rows = this.generateRows();
             return (
                 <Fragment>
