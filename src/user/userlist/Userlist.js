@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Menu from '../../Menu';
 import './Userlist.css';
+import Header from '../../header';
+
 class Userlist extends React.Component {
 
     constructor(props) {
@@ -72,6 +74,7 @@ class Userlist extends React.Component {
             return (
                 <Fragment>
                     <Menu />
+                    <Header pageTitle="User List" linkComponent="ABC" linkDisplay="XYZ" />
                     {/* </Fragment> //Link to={"/user/create"}>Create New</Link> */}
                     <table className="table table-sm">
                         <thead>

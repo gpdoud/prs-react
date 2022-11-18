@@ -7,9 +7,9 @@ import Home from '../Home';
 
 const routes = createBrowserRouter([
     { path: "/", element: <Home /> },
-    { path: "/login", element: <Login /> },
     { path: "/user/list", element: <Userlist /> },
-    { path: "/user/detail/:id", element: <Userdetail /> }
+    { path: "/user/detail/:id", element: <Userdetail /> },
+    { path: "/login", element: <Login /> }
 ]);
 
 export default routes;

@@ -1,70 +1,80 @@
 import React, { Fragment } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import Menu from '../../Menu';
+import withRouter from '../../withRouter';
 import './Userdetail.css';
+import Header from '../../header';
 
 class Userdetail extends React.Component {
-
     constructor(props) {
         super(props);
+        console.log("props.params.id:",props.params.id)
         this.state = {
+            userId: props.params.id,
             user: null,
             isLoaded: false,
             error: null
         }
     }
-    
-    init() {
-        // const [queryParameters] = useSearchParams();
-        // let id = queryParameters.get("id");
-        fetch(`http://localhost:5000/api/users/${this.id}`)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                console.debug("Sucessful AJAX call!", result);
-                this.setState({ 
-                    isLoaded: true,
-                    user: result
-                });
-            },
-            (error) => {
-                this.setState({
-                    error,
-                    isLoaded: false
-                });
-            }
-            );
-        }
-        
     componentDidMount() {
-        this.init();
+        let userId = this.state.userId;
+        fetch(`http://localhost:5000/api/users/${userId}`)
+            .then((res) => res.json())
+            .then((user) => {
+                console.log("Async call complete");
+                this.setState({ user: user, isLoaded: true });
+            });
     }
-
+    delete() {
+        console.debug("Delete()");
+    }
     render() {
-        // const [queryParameters] = useSearchParams();
-        // const id = queryParameters.get("id");
-        const isLoaded = this.state.isLoaded;
-        const error = this.state.error;
-        const user = this.state.user;
-        if(error) { 
-            console.error(error);
-            return <p>Error</p>
-        } else if(!isLoaded) {
+        let user = this.state.user;
+        let isLoaded = this.state.isLoaded;
+        if(!isLoaded) {
             return <p>Loading ...</p>
         } else {
             return (
                 <Fragment>
                     <Menu />
-                    {/* </Fragment> //Link to={"/user/create"}>Create New</Link> */}
-                    <table className="table table-sm">
+                    <Header pageTitle="User Detail" />
+                    <table className='table table-sm table-70'>
                         <tbody>
                             <tr>
-                                <td>Id</td>
-                                <td>{user.id}</td>
+                                <td>Id:</td>
+                                <td><input value={user.id} type="number" disabled /></td>
                             </tr>
                             <tr>
-                                <td>Username</td>
-                                <td>{user.username}</td>
+                                <td>Username:</td>
+                                <td><input value={user.username} disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>First name:</td>
+                                <td><input value={user.firstname} disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Last name:</td>
+                                <td><input value={user.lastname} disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Phone:</td>
+                                <td><input value={user.phone !== null ? user.phone : ''} disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><input value={user.email !== null ? user.email : ''} disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Reviewer?:</td>
+                                <td><input checked={user.isReviewer ? 'checked' : ''} type="checkbox" disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Admin?:</td>
+                                <td><input checked={user.isAdmin ? 'checked' : ''} type="checkbox" disabled /></td>
+                            </tr>
+                            <tr>
+                                <td colSpan="2">
+                                    <button onClick={this.delete} className="btn btn-danger">Delete</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -72,7 +82,7 @@ class Userdetail extends React.Component {
             )
         }
     }
-    
 }
 
-export default Userdetail;
+
+export default withRouter(Userdetail);
