@@ -75,7 +75,7 @@ class Userlist extends React.Component {
                 <Fragment>
                     <Menu />
                     <Header pageTitle="User List" linkComponent="ABC" linkDisplay="XYZ" />
-                    {/* </Fragment> //Link to={"/user/create"}>Create New</Link> */}
+                    <Link to={"/user/create"}>Create New</Link>
                     <table className="table table-sm">
                         <thead>
                             <tr>
