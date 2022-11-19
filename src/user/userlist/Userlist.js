@@ -49,7 +49,7 @@ class Userlist extends React.Component {
                     <td>{u.lastname}</td>
                     <td>{u.isReviewer ? "Yes" : "No"}</td>
                     <td>{u.isAdmin ? "Yes" : "No"}</td>
-                    <td className="blue">
+                    <td>
                         <Link to={`/user/detail/${u.id}`}>Detail</Link>
                         <span> | </span>
                         <span>Edit</span>
