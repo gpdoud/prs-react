@@ -29,7 +29,7 @@ function Userlist() {
                 <td>{u.firstname}</td>
                 <td>{u.lastname}</td>
                 <td>{u.phone ?? "(null)"}</td>
-                <td>{u.email && "(null)"}</td>
+                <td>{u.email ?? "(null)"}</td>
                 <td>{u.isReviewer ? "Y" : "N"}</td>
                 <td>{u.isAdmin ? "Y" : "N"}</td>
                 <td>
