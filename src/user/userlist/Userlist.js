@@ -23,7 +23,7 @@ function Userlist() {
     let trs = [];
     for (let u of users) {
         trs.push(
-            <tr>
+            <tr key={'key'+u.id}>
                 <td>{u.id}</td>
                 <td>{u.username}</td>
                 <td>{u.firstname}</td>
@@ -44,6 +44,7 @@ function Userlist() {
         <main>
             <Menu />
             <Header pageTitle="User List" />
+            <Link to={"/user/create"}>Create New</Link>
             <table className='table table-sm'>
                 <thead>
                     <tr>

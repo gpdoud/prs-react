@@ -1,86 +1,121 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Menu from '../../Menu';
-import withRouter from '../../withRouter';
-import './Usercreate.css';
 import Header from '../../header';
+import './Usercreate.css';
+import { User } from '../user';
 
-class Usercreate extends React.Component {
-    constructor(props) {
-        super(props);
-        // console.log("props.params.id:", props.params.id)
-        this.state = {
-            user_id: 0,
-            user_username: "ABC",
-            user_password: "",
-            user_firstname: "",
-            user_lastname: "",
-            user_phone: "",
-            user_email: "",
-            user_isReviewer: false,
-            user_isAdmin: false,
-            error: null
+const uri = "http://localhost:5000/api/users";
+
+
+const Usercreate = () => {
+    const [id, setId] = useState(0);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [phone, setPhone] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [isReviewer, setIsReviewer] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const navigate = useNavigate();
+
+    const handleChange = (event) => {
+        let field = event.target.name;
+        let value = event.target.value;
+        console.debug(field, value);
+        switch(field) {
+            case "id": setId(event.target.value); break;
+            case "username": setUsername(event.target.value); break;
+            case "password": setPassword(event.target.value); break;
+            case "firstname": setFirstname(event.target.value); break;
+            case "lastname": setLastname(event.target.value); break;
+            case "phone": setPhone(event.target.value); break;
+            case "email": setEmail(event.target.value); break;
+            case "isReviewer": setIsReviewer(event.target.checked); break;
+            case "isAdmin": setIsAdmin(event.target.checked); break;
         }
     }
-    handleChangeUsername(event) {
-        this.setState({ user_username: event.target.value });
-        console.log(this.state);
+    const save = async () => {
+        let user = new User();
+        user.id = id;
+        user.username = username;
+        user.password = password;
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.phone = phone;
+        user.email = email;
+        user.isReviewer = isReviewer;
+        user.isAdmin = isAdmin;
+        console.debug("User B4:", user);
+        const res = await fetch(`${uri}`, {
+            method: 'POST',
+            headers: {
+                "Accept": 'application/json',
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
+        if(res.status === 201) {
+            console.log("Create Successful!");
+        } else {
+            console.error("Error:", res);
+        }
+        navigate("/user/list");
     }
-    save() {
-        console.log("Username:", this.state.user_username);
-    }
-    render() {
-        
-        console.log(this.state);
-        return (
-            <Fragment>
-                <Menu />
-                <Header pageTitle="User Detail" />
-                <table className='table table-sm table-70'>
-                    <tbody>
-                        <tr>
-                            <td>Id:</td>
-                            <td><input value={this.state.user_id} type="number" disabled /></td>
-                        </tr>
-                        <tr>
-                            <td>Username:</td>
-                            <td><input defaultValue={this.state.user_username} type="text" name="username" onChange={this.handleChangeUsername} /></td>
-                        </tr>
-                        <tr>
-                            <td>First name:</td>
-                            <td><input defaultValue={this.state.user_firstname} /></td>
-                        </tr>
-                        <tr>
-                            <td>Last name:</td>
-                            <td><input defaultValue={this.state.user_lastname} /></td>
-                        </tr>
-                        <tr>
-                            <td>Phone:</td>
-                            <td><input defaultValue={this.state.user_phone !== null ? this.state.user_phone : ''} /></td>
-                        </tr>
-                        <tr>
-                            <td>Email:</td>
-                            <td><input defaultValue={this.state.user_email !== null ? this.state.user_email : ''} /></td>
-                        </tr>
-                        <tr>
-                            <td>Reviewer?:</td>
-                            <td><input defaultChecked={this.state.user_isReviewer ? 'checked' : ''} type="checkbox" /></td>
-                        </tr>
-                        <tr>
-                            <td>Admin?:</td>
-                            <td><input defaultChecked={this.state.user_isAdmin ? 'checked' : ''} type="checkbox" /></td>
-                        </tr>
-                        <tr>
-                            <td colSpan="2">
-                                <button onClick={this.save} className="btn btn-primary">Save</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </Fragment>
-        )
 
-    }
+    return (
+        <main>
+            <Menu />
+            <Header pageTitle="User Create" />
+            <table className='table table-sm table-70'>
+                <tbody>
+                    <tr>
+                        <td>Id</td>
+                        <td><input name="id" defaultValue={id} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td><input name="username" defaultValue={username} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" name="password" defaultValue={password} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Firstname</td>
+                        <td><input name="firstname" defaultValue={firstname} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Lastname</td>
+                        <td><input name="lastname" defaultValue={lastname} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td><input name="phone" defaultValue={phone} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><input name="email" defaultValue={email} onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Reviewer?</td>
+                        <td><input type="checkbox" name="isReviewer" onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td>Admin?</td>
+                        <td><input type="checkbox" name="isAdmin" onChange={handleChange} /></td>
+                    </tr>
+                    <tr>
+                        <td colSpan="2">
+                            <button onClick={save} className="btn btn-primary btn-sm">Save</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    )
 }
 
 
-export default withRouter(Usercreate);
+export default Usercreate;

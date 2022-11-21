@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../../header';
 import Menu from '../../Menu';
 
@@ -13,22 +13,25 @@ const callUserGet = async (id) => {
     return user;
 }
 
-const removeUser = async (id) => {
-    console.debug("Remove user id:", id);
-    const res = await fetch(`${uri}/${id}`, { method: 'DELETE', mode: 'cors' });
-    console.debug("res:", res);
-}
 
 const Userdetail = () => {
     const [user, setUser] = useState({});
     const params = useParams();
     console.debug(params);
+    const navigate = useNavigate();
     
     useEffect(() => {
         callUserGet(params.id)
         .then(res => setUser(res))
     }, []);
     
+    const removeUser = async (id) => {
+        console.debug("Remove user id:", id);
+        const res = await fetch(`${uri}/${id}`, { method: 'DELETE', mode: 'cors' });
+        console.debug("res:", res);
+        navigate("/user/list");
+    }
+
     const remove = () => {
         console.debug("remove()");
         removeUser(params.id)
