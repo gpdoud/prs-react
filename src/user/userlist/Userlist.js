@@ -35,6 +35,7 @@ function Userlist() {
                 <td>
                     <Link to={`/user/detail/${u.id}`}>Detail</Link>
                     <span> | </span>
+                    <Link to={`/user/change/${u.id}`}>Change</Link>
                 </td>
             </tr>
         )
